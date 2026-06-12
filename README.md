@@ -1,2 +1,2 @@
-# Freily02
-Mi Primera Web
+# Freily02 
+Interfaces with common visual components using Tailwind CSS
