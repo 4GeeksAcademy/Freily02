@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-50 text-gray-900">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Influencer Analytics Dashboard - Tailwind v4</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        main article {
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        main article:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px -18px rgba(15, 23, 42, 0.55);
+        }
+    </style>
+</head>
+<body class="min-h-full flex flex-col md:flex-row">
+
+    <header class="w-full bg-slate-900 text-white p-4 md:w-64 md:min-h-screen md:fixed md:left-0 md:top-0 flex md:flex-col justify-between md:justify-start gap-6 z-50 shadow-md">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center">
+                <svg viewBox="0 0 64 64" class="w-8 h-8" aria-label="Logo Marianny Olivo" role="img">
+                    <defs>
+                        <linearGradient id="logoGradient" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#f43f5e" />
+                            <stop offset="100%" stop-color="#0ea5e9" />
+                        </linearGradient>
+                    </defs>
+                    <circle cx="32" cy="32" r="28" fill="url(#logoGradient)" />
+                    <path d="M18 42V22h5l9 11 9-11h5v20h-5V30l-9 11-9-11v12h-5z" fill="#ffffff" />
+                </svg>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold tracking-tight">Marianny Olivo</h1>
+                <p class="text-[11px] uppercase tracking-[0.2em] text-slate-400">Fashion Analytics</p>
+            </div>
+        </div>
+        
+        <nav class="hidden sm:flex md:flex-col gap-2 w-full md:mt-6">
+            <a href="index.html" class="px-4 py-2.5 rounded-lg bg-slate-800 text-indigo-400 font-medium text-sm flex items-center gap-3">
+                <span>📊</span> Dashboard
+            </a>
+            <a href="productos.html" class="px-4 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition font-medium text-sm flex items-center gap-3">
+                <span>📦</span> Products
+            </a>
+            <a href="plataformas.html" class="px-4 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition font-medium text-sm flex items-center gap-3">
+                <span>📱</span> Platforms
+            </a>
+        </nav>
+        
+        <div class="sm:hidden flex items-center">
+            <span class="text-sm bg-slate-800 px-3 py-1.5 rounded text-indigo-400 font-mono">v4.0</span>
+        </div>
+    </header>
+
+    <main class="flex-1 p-4 sm:p-6 md:p-8 md:ml-64 w-full max-w-7xl mx-auto">
+        
+        <section class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+                <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Performance Dashboard</h2>
+                <p class="text-sm text-gray-500 mt-1">Real-time campaign and conversion performance overview.</p>
+                <p class="text-sm text-indigo-600 mt-1 font-medium">Influencer: Marianny Olivo</p>
+            </div>
+            <div class="flex items-center gap-2 self-start sm:self-auto bg-white px-3 py-1.5 rounded-lg border border-gray-200 shadow-xs">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span class="text-xs font-medium text-gray-600">Data Updated</span>
+            </div>
+        </section>
+
+        <section class="mb-8 bg-white rounded-xl border border-gray-200 shadow-xs p-4 sm:p-5">
+            <div class="flex flex-col lg:flex-row lg:items-end gap-4 lg:gap-6">
+                <div class="w-full lg:w-56">
+                    <label for="periodFilter" class="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">Period</label>
+                    <select id="periodFilter" class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-300">
+                        <option value="week">Last 7 days</option>
+                        <option value="month" selected>Last 30 days</option>
+                        <option value="quarter">Last 90 days</option>
+                    </select>
+                </div>
+                <div class="w-full lg:w-56">
+                    <label for="platformFilter" class="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">Platform</label>
+                    <select id="platformFilter" class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-300">
+                        <option value="all" selected>All</option>
+                        <option value="TikTok">TikTok</option>
+                        <option value="Instagram">Instagram</option>
+                        <option value="YouTube">YouTube</option>
+                        <option value="Facebook">Facebook</option>
+                    </select>
+                </div>
+                <button id="simulateUpdate" class="rounded-lg bg-slate-900 text-white px-4 py-2.5 text-sm font-semibold hover:bg-slate-800 transition">Simulate update</button>
+                <div class="text-xs text-gray-500 lg:ml-auto">
+                    Last update: <span id="lastUpdated" class="font-semibold text-slate-700">--:--:--</span>
+                </div>
+            </div>
+            <div class="mt-4 flex flex-wrap items-center gap-2 text-xs text-gray-500">
+                <span>Active networks:</span>
+                <span class="inline-flex items-center gap-1 rounded-full border border-gray-200 bg-gray-50 px-2 py-1"><span class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-slate-900 text-white text-[10px] font-bold">T</span> TikTok</span>
+                <span class="inline-flex items-center gap-1 rounded-full border border-gray-200 bg-gray-50 px-2 py-1"><span class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-pink-500 text-white text-[10px] font-bold">IG</span> Instagram</span>
+                <span class="inline-flex items-center gap-1 rounded-full border border-gray-200 bg-gray-50 px-2 py-1"><span class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-white text-[10px] font-bold">YT</span> YouTube</span>
+                <span class="inline-flex items-center gap-1 rounded-full border border-gray-200 bg-gray-50 px-2 py-1"><span class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-white text-[10px] font-bold">f</span> Facebook</span>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+            
+            <article class="bg-white p-6 rounded-xl border border-gray-200 shadow-xs flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-500">Total Commissions</span>
+                        <span id="kpiComisionDelta" class="px-2 py-0.5 rounded text-xs font-semibold bg-emerald-50 text-emerald-700">+15% net</span>
+                    </div>
+                    <p id="kpiComision" class="text-3xl font-bold text-slate-900 tracking-tight">$4,875.00</p>
+                </div>
+                <p id="kpiComisionDetail" class="text-xs text-gray-400 mt-4">15% on $32,500 in gross sales</p>
+            </article>
+
+            <article class="bg-white p-6 rounded-xl border border-gray-200 shadow-xs flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-500">Sales Volume</span>
+                        <span id="kpiVentasBadge" class="px-2 py-0.5 rounded text-xs font-semibold bg-indigo-50 text-indigo-700">380 units</span>
+                    </div>
+                    <p id="kpiVentas" class="text-3xl font-bold text-slate-900 tracking-tight">380</p>
+                </div>
+                <p id="kpiClicks" class="text-xs text-gray-400 mt-4">Total accumulated clicks: 12,450</p>
+            </article>
+
+            <article class="bg-white p-6 rounded-xl border border-gray-200 shadow-xs flex flex-col justify-between sm:col-span-2 lg:col-span-1">
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-500">Overall Conversion Rate</span>
+                        <span class="px-2 py-0.5 rounded text-xs font-semibold bg-amber-50 text-amber-700">Goal: 2.5%</span>
+                    </div>
+                    <p id="kpiConversion" class="text-3xl font-bold text-slate-900 tracking-tight">3.05%</p>
+                </div>
+                <div class="w-full bg-gray-100 h-2 rounded-full mt-4 overflow-hidden">
+                    <div id="kpiConversionBar" class="bg-indigo-600 h-full rounded-full" style="width: 75%"></div>
+                </div>
+            </article>
+            
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            
+            <article class="bg-white p-5 rounded-xl border border-gray-200 shadow-xs">
+                <h3 class="text-sm font-semibold text-slate-900 mb-4 uppercase tracking-wider text-gray-500">Platform Performance</h3>
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between text-xs font-medium mb-1">
+                            <span class="flex items-center gap-1.5"><span class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-slate-900 text-white text-[10px] font-bold">T</span> TikTok</span>
+                            <span id="platformTikTokText" class="text-gray-500">190 sales (50%)</span>
+                        </div>
+                        <div class="w-full bg-gray-100 h-3 rounded-md overflow-hidden">
+                            <div id="platformTikTokBar" class="bg-slate-900 h-full" style="width: 50%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs font-medium mb-1">
+                            <span class="flex items-center gap-1.5"><span class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-pink-500 text-white text-[10px] font-bold">IG</span> Instagram</span>
+                            <span id="platformInstagramText" class="text-gray-500">133 sales (35%)</span>
+                        </div>
+                        <div class="w-full bg-gray-100 h-3 rounded-md overflow-hidden">
+                            <div id="platformInstagramBar" class="bg-pink-500 h-full" style="width: 35%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs font-medium mb-1">
+                            <span class="flex items-center gap-1.5"><span class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-white text-[10px] font-bold">YT</span> YouTube</span>
+                            <span id="platformYouTubeText" class="text-gray-500">57 sales (15%)</span>
+                        </div>
+                        <div class="w-full bg-gray-100 h-3 rounded-md overflow-hidden">
+                            <div id="platformYouTubeBar" class="bg-red-600 h-full" style="width: 15%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs font-medium mb-1">
+                            <span class="flex items-center gap-1.5"><span class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-white text-[11px] font-bold">f</span> Facebook</span>
+                            <span id="platformFacebookText" class="text-gray-500">46 sales (12%)</span>
+                        </div>
+                        <div class="w-full bg-gray-100 h-3 rounded-md overflow-hidden">
+                            <div id="platformFacebookBar" class="bg-blue-600 h-full" style="width: 12%"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="bg-white p-5 rounded-xl border border-gray-200 shadow-xs">
+                <h3 class="text-sm font-semibold text-slate-900 mb-4 uppercase tracking-wider text-gray-500">Sales by Product</h3>
+                <div id="productSummaryList" class="space-y-4"></div>
+            </article>
+
+            <article class="bg-white p-5 rounded-xl border border-gray-200 shadow-xs flex flex-col justify-between">
+                <div>
+                    <h3 class="text-sm font-semibold text-slate-900 mb-4 uppercase tracking-wider text-gray-500">Content Engagement</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-gray-50 p-3 rounded-lg text-center border border-gray-100">
+                            <p class="text-xs font-medium text-gray-500">Average Likes</p>
+                            <p id="engagementLikes" class="text-lg font-bold text-slate-800 mt-1">4.2k</p>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-lg text-center border border-gray-100">
+                            <p class="text-xs font-medium text-gray-500">Comments</p>
+                            <p id="engagementComments" class="text-lg font-bold text-slate-800 mt-1 text-slate-700">284</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+                    <span id="engagementPosts">Posts this month: <strong>24</strong></span>
+                    <span id="engagementTrend" class="text-emerald-600 font-medium">▲ +8% vs previous month</span>
+                </div>
+            </article>
+
+        </section>
+
+        <section class="space-y-6">
+            
+            <article class="bg-white rounded-xl border border-gray-200 shadow-xs overflow-hidden">
+                <div class="px-5 py-4 border-b border-gray-100 bg-gray-50/70">
+                    <h3 class="font-bold text-slate-900 text-base">Product Operational Metrics</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm border-collapse">
+                        <thead>
+                            <tr class="border-b border-gray-200 text-gray-400 bg-gray-50/50 uppercase font-semibold text-xs tracking-wider">
+                                <th class="p-4">Product</th>
+                                <th class="p-4 text-right">Unit Price</th>
+                                <th class="p-4 text-right">Total Sales</th>
+                                <th class="p-4 text-right">Commission Gen.</th>
+                                <th class="p-4 text-right">Estimated ROI</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productTableBody" class="divide-y divide-gray-100 font-medium text-gray-700">
+                            <tr class="hover:bg-gray-50/80 transition">
+                                <td class="p-4 text-slate-900 font-semibold">Premium Satin Blouse</td>
+                                <td class="p-4 text-right">$52.00</td>
+                                <td class="p-4 text-right text-gray-600">120</td>
+                                <td class="p-4 text-right text-emerald-600">$936.00</td>
+                                <td class="p-4 text-right"><span class="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded text-xs font-semibold">4.2x</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+
+            <article class="bg-white rounded-xl border border-gray-200 shadow-xs overflow-hidden">
+                <div class="px-5 py-4 border-b border-gray-100 bg-gray-50/70">
+                    <h3 class="font-bold text-slate-900 text-base">Performance by Social Channel</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm border-collapse">
+                        <thead>
+                            <tr class="border-b border-gray-200 text-gray-400 bg-gray-50/50 uppercase font-semibold text-xs tracking-wider">
+                                <th class="p-4">Platform</th>
+                                <th class="p-4 text-right">Alcance (Reach)</th>
+                                <th class="p-4 text-right">Interactions</th>
+                                <th class="p-4 text-right">Conversions</th>
+                                <th class="p-4 text-right">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="socialTableBody" class="divide-y divide-gray-100 font-medium text-gray-700">
+                            <tr class="hover:bg-gray-50/80 transition">
+                                <td class="p-4 text-slate-900 font-semibold flex items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-slate-900 text-white text-[10px] font-bold">T</span> TikTok</td>
+                                <td class="p-4 text-right text-gray-600">45,000</td>
+                                <td class="p-4 text-right text-gray-600">5,400 (12%)</td>
+                                <td class="p-4 text-right text-slate-900 font-semibold">190</td>
+                                <td class="p-4 text-right"><span class="bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded text-xs font-medium">Top Seller</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+
+        </section>
+        
+    </main>
+
+    <script>
+        const periodFilter = document.getElementById("periodFilter");
+        const platformFilter = document.getElementById("platformFilter");
+        const simulateUpdate = document.getElementById("simulateUpdate");
+        const lastUpdated = document.getElementById("lastUpdated");
+
+        const platformLogos = {
+            TikTok: { label: "T", classes: "bg-slate-900 text-white text-[10px]" },
+            Instagram: { label: "IG", classes: "bg-pink-500 text-white text-[10px]" },
+            YouTube: { label: "YT", classes: "bg-red-600 text-white text-[10px]" },
+            Facebook: { label: "f", classes: "bg-blue-600 text-white text-[11px]" }
+        };
+
+        const periodConfig = {
+            week: { multiplier: 0.62, trend: 6, label: "this week" },
+            month: { multiplier: 1, trend: 8, label: "this month" },
+            quarter: { multiplier: 2.55, trend: 13, label: "this quarter" }
+        };
+
+        const baseData = {
+            grossSales: 32500,
+            clicks: 12450,
+            products: [
+                { name: "Premium Satin Blouse", price: 52, sales: 120, commissionRate: 0.15, roi: 4.2, color: "bg-indigo-500" },
+                { name: "Floral Midi Dress", price: 82, sales: 96, commissionRate: 0.15, roi: 4.6, color: "bg-fuchsia-500" },
+                { name: "Women Skinny Jeans", price: 78, sales: 92, commissionRate: 0.15, roi: 4.0, color: "bg-sky-500" },
+                { name: "Classy High Heels", price: 118, sales: 74, commissionRate: 0.15, roi: 5.1, color: "bg-purple-500" },
+                { name: "Urban Chic Sandals", price: 64, sales: 86, commissionRate: 0.15, roi: 3.9, color: "bg-emerald-500" }
+            ],
+            platforms: [
+                { name: "TikTok", sales: 190, reach: 45000, interactions: 5400, status: "Top Seller", statusClass: "bg-indigo-50 text-indigo-700" },
+                { name: "Instagram", sales: 133, reach: 38000, interactions: 3040, status: "Stable", statusClass: "bg-emerald-50 text-emerald-700" },
+                { name: "YouTube", sales: 57, reach: 12500, interactions: 1875, status: "High Engagement", statusClass: "bg-amber-50 text-amber-700" },
+                { name: "Facebook", sales: 46, reach: 21000, interactions: 1470, status: "Growing", statusClass: "bg-blue-50 text-blue-700" }
+            ],
+            engagement: {
+                likes: 4200,
+                comments: 284,
+                posts: 24
+            }
+        };
+
+        function getPlatformLogo(name) {
+            const logo = platformLogos[name];
+            if (!logo) return "";
+            return `<span class="inline-flex h-5 w-5 items-center justify-center rounded-full font-bold ${logo.classes}">${logo.label}</span>`;
+        }
+
+        function formatMoney(value) {
+            return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
+        }
+
+        function formatNumber(value) {
+            return new Intl.NumberFormat("en-US").format(value);
+        }
+
+        function formatCompact(value) {
+            return new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 }).format(value).toLowerCase();
+        }
+
+        function applyMultiplier(value, multiplier) {
+            return Math.max(0, Math.round(value * multiplier));
+        }
+
+        function buildScenario() {
+            const period = periodFilter.value;
+            const selectedPlatform = platformFilter.value;
+            const config = periodConfig[period];
+            const platformBoost = selectedPlatform === "all" ? 1 : 1.12;
+            const multiplier = config.multiplier * platformBoost;
+
+            const products = baseData.products.map((product) => {
+                const sales = applyMultiplier(product.sales, multiplier);
+                const commission = sales * product.price * product.commissionRate;
+                return { ...product, sales, commission };
+            });
+
+            const totalSales = products.reduce((acc, item) => acc + item.sales, 0);
+            const grossSales = products.reduce((acc, item) => acc + (item.sales * item.price), 0);
+            const commissionTotal = products.reduce((acc, item) => acc + item.commission, 0);
+            const clicks = applyMultiplier(baseData.clicks, multiplier * 1.02);
+            const conversionRate = clicks > 0 ? (totalSales / clicks) * 100 : 0;
+
+            const platforms = baseData.platforms
+                .map((platform) => {
+                    const sales = applyMultiplier(platform.sales, multiplier);
+                    const reach = applyMultiplier(platform.reach, multiplier);
+                    const interactions = applyMultiplier(platform.interactions, multiplier);
+                    return { ...platform, sales, reach, interactions };
+                })
+                .filter((platform) => selectedPlatform === "all" || platform.name === selectedPlatform);
+
+            const platformSalesTotal = platforms.reduce((acc, item) => acc + item.sales, 0) || 1;
+
+            const engagement = {
+                likes: applyMultiplier(baseData.engagement.likes, multiplier * 1.05),
+                comments: applyMultiplier(baseData.engagement.comments, multiplier * 1.03),
+                posts: applyMultiplier(baseData.engagement.posts, config.multiplier)
+            };
+
+            return {
+                period,
+                config,
+                totalSales,
+                grossSales,
+                commissionTotal,
+                clicks,
+                conversionRate,
+                products,
+                platforms,
+                platformSalesTotal,
+                engagement
+            };
+        }
+
+        function renderPlatformSummary(platforms, totalSales) {
+            const map = {
+                TikTok: { text: document.getElementById("platformTikTokText"), bar: document.getElementById("platformTikTokBar") },
+                Instagram: { text: document.getElementById("platformInstagramText"), bar: document.getElementById("platformInstagramBar") },
+                YouTube: { text: document.getElementById("platformYouTubeText"), bar: document.getElementById("platformYouTubeBar") },
+                Facebook: { text: document.getElementById("platformFacebookText"), bar: document.getElementById("platformFacebookBar") }
+            };
+
+            ["TikTok", "Instagram", "YouTube", "Facebook"].forEach((name) => {
+                const current = platforms.find((item) => item.name === name);
+                const sales = current ? current.sales : 0;
+                const pct = totalSales > 0 ? (sales / totalSales) * 100 : 0;
+                map[name].text.textContent = `${formatNumber(sales)} sales (${pct.toFixed(0)}%)`;
+                map[name].bar.style.width = `${Math.max(4, pct)}%`;
+            });
+        }
+
+        function renderProductSummary(products, totalSales) {
+            const summaryList = document.getElementById("productSummaryList");
+            summaryList.innerHTML = products.map((product) => {
+                const percent = totalSales > 0 ? (product.sales / totalSales) * 100 : 0;
+                return `
+                    <div>
+                        <div class="flex justify-between text-xs font-medium mb-1 gap-2">
+                            <span>${product.name} (${formatMoney(product.price)})</span>
+                            <span class="text-gray-600">${formatNumber(product.sales)} units / ${formatMoney(product.commission)} commission</span>
+                        </div>
+                        <div class="w-full bg-gray-100 h-2.5 rounded-full overflow-hidden">
+                            <div class="${product.color} h-full" style="width: ${Math.max(4, percent)}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        function renderProductTable(products) {
+            const body = document.getElementById("productTableBody");
+            body.innerHTML = products.map((product) => `
+                <tr class="hover:bg-gray-50/80 transition">
+                    <td class="p-4 text-slate-900 font-semibold">${product.name}</td>
+                    <td class="p-4 text-right">${formatMoney(product.price)}</td>
+                    <td class="p-4 text-right text-gray-600">${formatNumber(product.sales)}</td>
+                    <td class="p-4 text-right text-emerald-600">${formatMoney(product.commission)}</td>
+                    <td class="p-4 text-right"><span class="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded text-xs font-semibold">${product.roi.toFixed(1)}x</span></td>
+                </tr>
+            `).join("");
+        }
+
+        function renderSocialTable(platforms) {
+            const body = document.getElementById("socialTableBody");
+            body.innerHTML = platforms.map((platform) => {
+                const interactionRate = platform.reach > 0 ? (platform.interactions / platform.reach) * 100 : 0;
+                return `
+                    <tr class="hover:bg-gray-50/80 transition">
+                        <td class="p-4 text-slate-900 font-semibold flex items-center gap-2">${getPlatformLogo(platform.name)} ${platform.name}</td>
+                        <td class="p-4 text-right text-gray-600">${formatNumber(platform.reach)}</td>
+                        <td class="p-4 text-right text-gray-600">${formatNumber(platform.interactions)} (${interactionRate.toFixed(0)}%)</td>
+                        <td class="p-4 text-right text-slate-900 font-semibold">${formatNumber(platform.sales)}</td>
+                        <td class="p-4 text-right"><span class="${platform.statusClass} px-2 py-0.5 rounded text-xs font-medium">${platform.status}</span></td>
+                    </tr>
+                `;
+            }).join("");
+        }
+
+        function renderDashboard() {
+            const scenario = buildScenario();
+
+            document.getElementById("kpiComision").textContent = formatMoney(scenario.commissionTotal);
+            document.getElementById("kpiComisionDelta").textContent = `+${scenario.config.trend}% net`;
+            document.getElementById("kpiComisionDetail").textContent = `15% on ${formatMoney(scenario.grossSales)} in gross sales`;
+
+            document.getElementById("kpiVentas").textContent = formatNumber(scenario.totalSales);
+            document.getElementById("kpiVentasBadge").textContent = `${formatNumber(scenario.totalSales)} units`;
+            document.getElementById("kpiClicks").textContent = `Total accumulated clicks: ${formatNumber(scenario.clicks)}`;
+
+            const conversion = scenario.conversionRate;
+            document.getElementById("kpiConversion").textContent = `${conversion.toFixed(2)}%`;
+            document.getElementById("kpiConversionBar").style.width = `${Math.min(100, (conversion / 4.0) * 100)}%`;
+
+            renderPlatformSummary(scenario.platforms, scenario.platformSalesTotal);
+            renderProductSummary(scenario.products, scenario.totalSales);
+            renderProductTable(scenario.products);
+            renderSocialTable(scenario.platforms);
+
+            document.getElementById("engagementLikes").textContent = formatCompact(scenario.engagement.likes);
+            document.getElementById("engagementComments").textContent = formatNumber(scenario.engagement.comments);
+            document.getElementById("engagementPosts").innerHTML = `Posts ${scenario.config.label}: <strong>${formatNumber(scenario.engagement.posts)}</strong>`;
+            document.getElementById("engagementTrend").textContent = `▲ +${scenario.config.trend}% vs previous period`;
+
+            lastUpdated.textContent = new Date().toLocaleTimeString("en-US");
+        }
+
+        periodFilter.addEventListener("change", renderDashboard);
+        platformFilter.addEventListener("change", renderDashboard);
+        simulateUpdate.addEventListener("click", renderDashboard);
+
+        renderDashboard();
+    </script>
+</body>
+</html>
